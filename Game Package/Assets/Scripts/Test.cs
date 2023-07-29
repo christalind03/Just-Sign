@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Diagnostics;
+using System.IO;
 
 public class Test : MonoBehaviour
 {
@@ -20,27 +22,34 @@ public class Test : MonoBehaviour
     void Start()
     {
         _udpServer = UDP_Server.Instance;
+        RunPython();
         
         _runPredictions.onValueChanged.AddListener(delegate {UpdatePredictions(_runPredictions);});
         _stopPredictions.onValueChanged.AddListener(delegate {StopPredictions(_stopPredictions);});
         _closeProgram.onValueChanged.AddListener(delegate {UpdateProgram(_closeProgram);});
     }
 
+    void RunPython()
+    {
+        string executableDirectory  = Directory.GetCurrentDirectory() + "/Assets/Scripts/ASL Recognition/Executable File/ASL Recognition Script.exe";
+        Process.Start(executableDirectory);
+    }
+
     void UpdatePredictions(Toggle change)
     {
-        Debug.Log("Predictions is now " + _runPredictions.isOn);
+        UnityEngine.Debug.Log("Predictions is now " + _runPredictions.isOn);
         _udpServer.SendData("RUN PREDICTIONS");
     }
 
     void StopPredictions(Toggle change)
     {
-        Debug.Log("Predictions is now " + _runPredictions.isOn);
+        UnityEngine.Debug.Log("Predictions is now " + _runPredictions.isOn);
         _udpServer.SendData("STOP PREDICTIONS");
     }
 
     void UpdateProgram(Toggle change)
     {
-        Debug.Log("Program is now " + _closeProgram.isOn);
+        UnityEngine.Debug.Log("Program is now " + _closeProgram.isOn);
         _udpServer.SendData("TERMINATE");
     }
 }
