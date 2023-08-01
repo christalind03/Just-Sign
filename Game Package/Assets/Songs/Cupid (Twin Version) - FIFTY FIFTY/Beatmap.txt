@@ -1,0 +1,8 @@
+[Song Information]
+Title: Cupid (Twin Version)
+Artist: FIFTY FIFTY
+Difficulty: Easy
+
+[Sign Data]
+5, SOMETHING
+15, ME
