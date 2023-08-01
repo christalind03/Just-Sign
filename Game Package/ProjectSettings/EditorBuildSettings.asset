@@ -11,5 +11,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SongSelection.unity
     guid: 1992b1d5c31fad24ea22aecf6004ae9c
+  - enabled: 1
+    path: Assets/Scenes/Playground.unity
+    guid: b5ca3513b362b8a469013c1b34bc8202
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
