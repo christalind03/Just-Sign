@@ -62,8 +62,6 @@ public class UDP_Server
             {
                 byte[] dataByte = _udpServer.Receive(ref _clientEndPoint);
                 _receivedData = Encoding.UTF8.GetString(dataByte);
-
-                Debug.Log(_receivedData); 
             }
             catch (Exception networkError)
             {
