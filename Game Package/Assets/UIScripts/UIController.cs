@@ -17,6 +17,6 @@ public class UIController : MonoBehaviour
     }
 
     void Song1ButtonPressed(){
-        SceneManager.LoadScene("Playground");
+        SceneManager.LoadScene("Gameplay");
     }
 }
