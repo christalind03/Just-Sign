@@ -166,7 +166,8 @@ public class Gameplay : MonoBehaviour
 
     public void OnDestroy()
     {
-        // No need to end the process we started using Process.Kill() or something similar as sending "TERMINATE" via UDP will work
+        // No need to end the process we started using Process.Kill() or something similar as stopping the game and sending "TERMINATE" via UDP will work
+        StopGame();
         _udpServer.SendData("TERMINATE");
     }
 }
