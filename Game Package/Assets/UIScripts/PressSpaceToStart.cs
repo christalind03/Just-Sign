@@ -8,7 +8,7 @@ public class SwitchScene : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            SceneManager.LoadScene("SongSelection"); // replace "NextScene" with the name of your scene
+            SceneManager.LoadScene("SongSelectionMenu"); 
         }
     }
 }

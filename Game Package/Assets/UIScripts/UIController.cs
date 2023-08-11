@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class UIController : MonoBehaviour
 {
     public Button Song1;
+    public Button HomeButton;
 
     // Start is called before the first frame update
     void Start()
@@ -14,9 +15,16 @@ public class UIController : MonoBehaviour
         var root = GetComponent<UIDocument>().rootVisualElement;
         Song1 = root.Q<Button>("Song1");
         Song1.clicked += Song1ButtonPressed;
+
+        HomeButton = root.Q<Button>("HomeButton");
+        HomeButton.clicked += HomeButtonPressed;
     }
 
     void Song1ButtonPressed(){
         SceneManager.LoadScene("Gameplay");
+    }
+
+    void HomeButtonPressed(){
+        SceneManager.LoadScene("MainMenu");
     }
 }
