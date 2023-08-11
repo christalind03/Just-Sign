@@ -33,17 +33,17 @@ public class Gameplay : MonoBehaviour
 
         string executableDirectory = Directory.GetCurrentDirectory() + "/Assets/Scripts/ASL Recognition/Executable File/ASL Recognition Script.exe";
         Process.Start(executableDirectory);
-
-        System.Threading.Thread.Sleep(5000);
-
-        _videoPlayer.url = "C:/Users/chris/Downloads/Video.mov";
-        LoadSong("C:/Users/chris/Downloads/Just-Sign/Game Package/Assets/Songs/Cupid (Twin Version) - FIFTY FIFTY/Beatmap.txt");
-
-        StartGame();
     }
 
-    public void LoadSong(string beatmapFilePath)
+    public void LoadSong(string songFolderPath)
     {
+        // Load the video into the video player
+        string videoFilePath = $"{songFolderPath}/Video.mov";
+        _videoPlayer.url = videoFilePath;
+
+        // Load the beatmap
+        string beatmapFilePath = $"{songFolderPath}/Beatmap.txt";
+
         bool readingSongData = false;
         bool readingSignData = false;
 
