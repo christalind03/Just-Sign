@@ -1951,7 +1951,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1042390878}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1261815017}
+        m_TargetAssemblyTypeName: SongSearch, Assembly-CSharp
+        m_MethodName: ToggleSearchPanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &1042390880
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2352,8 +2364,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e9bbd07402edd419fc086aa4ba778f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  searchInputField: {fileID: 0}
-  songButtons: []
+  searchInputField: {fileID: 330220567}
+  songButtons:
+  - {fileID: 2116283554}
+  - {fileID: 503586067}
+  - {fileID: 1044083684}
+  - {fileID: 332143283}
+  - {fileID: 878285056}
+  - {fileID: 755580010}
+  searchPanel: {fileID: 1261815012}
 --- !u!1 &1338868582
 GameObject:
   m_ObjectHideFlags: 0
