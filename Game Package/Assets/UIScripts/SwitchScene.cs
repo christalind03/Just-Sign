@@ -1,12 +1,15 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;  // Import the UI namespace
+using UnityEngine.EventSystems;
+
 
 public class SwitchScene : MonoBehaviour
 {
     public Button homeButton;  // Public reference to the UI button
 
     private string currentSceneName;
+
 
     private void Start()
     {
@@ -24,6 +27,7 @@ public class SwitchScene : MonoBehaviour
             homeButton.onClick.AddListener(GoToMainMenu);
         }
     }
+
 
     void Update()
     {
