@@ -36,10 +36,10 @@ public class SwitchScene : MonoBehaviour
             SceneManager.LoadScene("SongSelectionMenu");
         }
 
-        if (Input.GetMouseButtonDown(0) && currentSceneName == "GameOver")
-        {
-            SceneManager.LoadScene("SongSelectionMenu");
-        }
+        // if (Input.GetMouseButtonDown(0) && currentSceneName == "GameOver")
+        // {
+        //     SceneManager.LoadScene("SongSelectionMenu");
+        // }
     }
 
     // This method will be triggered when the home button is clicked
