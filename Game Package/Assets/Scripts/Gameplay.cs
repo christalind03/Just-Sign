@@ -8,6 +8,9 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
+using UnityEngine.SceneManagement;
+
+
 public class Gameplay : MonoBehaviour
 {
     [SerializeField]
@@ -22,6 +25,8 @@ public class Gameplay : MonoBehaviour
     private int? expectedTime = null;
     private string expectedPrediction = null;
     private List<string> currentPredictions = new List<string>();
+
+    private int _totalScore = 0;
 
     public void Start()
     {
@@ -151,17 +156,26 @@ public class Gameplay : MonoBehaviour
         UnityEngine.Debug.Log($"Accuracy: {accuracy * 100}%");
 
         // Return the score based on accuracy
-        if (accuracy >= 0.9) return "PERFECT";
-        if (accuracy >= 0.8) return "GREAT";
-        if (accuracy >= 0.6) return "GOOD";
-        if (accuracy >= 0.4) return "OK";
+        if (accuracy >= 0.9) { _totalScore += 100; return "PERFECT"; }
+        if (accuracy >= 0.8) { _totalScore += 80; return "GREAT"; }
+        if (accuracy >= 0.6) { _totalScore += 60; return "GOOD"; }
+        if (accuracy >= 0.4) { _totalScore += 40; return "OK"; }
         return "MISS";
     }
+
+    public int GetTotalScore()
+    {
+        return _totalScore;
+    }
+
 
     public void StopGame()
     {
         _udpServer.SendData("STOP PREDICTIONS");
         _runningPredictions = false;
+
+        // Switch to the GameOver scene
+        SceneManager.LoadScene("GameOver");
     }
 
     public void OnDestroy()
