@@ -38,6 +38,7 @@ public class Gameplay : MonoBehaviour
 
         string executableDirectory = Directory.GetCurrentDirectory() + "/Assets/Scripts/ASL Recognition/Executable File/ASL Recognition Script.exe";
         Process.Start(executableDirectory);
+
     }
 
     public void LoadSong(string songFolderPath)
