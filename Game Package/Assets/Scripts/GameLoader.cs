@@ -18,6 +18,5 @@ public class GameLoader : MonoBehaviour
         _gameplay.LoadSong(selectedSongPath);
         _gameplay.StartGame();
         SceneManager.LoadScene("Gameplay");
-
     }
 }

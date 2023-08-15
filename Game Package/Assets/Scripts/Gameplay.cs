@@ -22,7 +22,7 @@ public class Gameplay : MonoBehaviour
     private Dictionary<string, string> _songInformation;
     private Queue<(int, string)> _expectedPredictions;
 
-    private int? expectedTime = null;
+    private int? expectedFrame = null;
     private string expectedPrediction = null;
     private List<string> currentPredictions = new List<string>();
 
@@ -38,7 +38,6 @@ public class Gameplay : MonoBehaviour
 
         string executableDirectory = Directory.GetCurrentDirectory() + "/Assets/Scripts/ASL Recognition/Executable File/ASL Recognition Script.exe";
         Process.Start(executableDirectory);
-
     }
 
     public void LoadSong(string songFolderPath)
@@ -105,13 +104,13 @@ public class Gameplay : MonoBehaviour
     {
         if (_runningPredictions)
         {
-            if (expectedTime == null)
+            if (expectedFrame == null)
             {
                 try
                 {
                     var expectedInformation = _expectedPredictions.Dequeue();
 
-                    expectedTime = expectedInformation.Item1;
+                    expectedFrame = expectedInformation.Item1;
                     expectedPrediction = expectedInformation.Item2;
                 }
                 catch
@@ -119,11 +118,11 @@ public class Gameplay : MonoBehaviour
                     StopGame();
                 }
             }
-            else if ((expectedTime != null) && (_videoPlayer.time == expectedTime))
+            else if ((expectedFrame != null) && (_videoPlayer.frame == expectedFrame))
             {
                 CalculateScore(expectedPrediction);
 
-                expectedTime = null;
+                expectedFrame = null;
                 expectedPrediction = null;
                 currentPredictions.Clear();
             }
@@ -168,7 +167,6 @@ public class Gameplay : MonoBehaviour
     {
         return _totalScore;
     }
-
 
     public void StopGame()
     {
