@@ -22,9 +22,9 @@ public class Gameplay : MonoBehaviour
     private Dictionary<string, string> _songInformation;
     private Queue<(int, string)> _expectedPredictions;
 
-    private int? expectedFrame = null;
-    private string expectedPrediction = null;
-    private List<string> currentPredictions = new List<string>();
+    private int? _expectedFrame;
+    private string _expectedPrediction;
+    private List<string> _currentPredictions;
 
     private int _totalScore = 0;
 
@@ -36,7 +36,11 @@ public class Gameplay : MonoBehaviour
         _songInformation = new Dictionary<string, string>();
         _expectedPredictions = new Queue<(int, string)>();
 
-        string executableDirectory = Directory.GetCurrentDirectory() + "/Assets/Scripts/ASL Recognition/Executable File/ASL Recognition Script.exe";
+        _expectedFrame = null;
+        _expectedPrediction = null;
+        _currentPredictions = new List<string>();
+
+        string executableDirectory = Directory.GetCurrentDirectory() + "/Assets/Scripts/ASL Recognition/Executable.exe";
         Process.Start(executableDirectory);
     }
 
@@ -96,7 +100,7 @@ public class Gameplay : MonoBehaviour
 
     public void StartGame()
     {
-        _udpServer.SendData("RUN PREDICTIONS");
+        _udpServer.SendData("START PREDICTIONS");
         _runningPredictions = true;
     }
 
@@ -104,43 +108,47 @@ public class Gameplay : MonoBehaviour
     {
         if (_runningPredictions)
         {
-            if (expectedFrame == null)
+            if (_expectedFrame == null)
             {
                 try
                 {
                     var expectedInformation = _expectedPredictions.Dequeue();
 
-                    expectedFrame = expectedInformation.Item1;
-                    expectedPrediction = expectedInformation.Item2;
+                    _expectedFrame = expectedInformation.Item1;
+                    _expectedPrediction = expectedInformation.Item2;
                 }
                 catch
                 {
                     StopGame();
                 }
             }
-            else if ((expectedFrame != null) && (_videoPlayer.frame == expectedFrame))
+            else if ((_expectedFrame != null) && (_videoPlayer.frame == _expectedFrame))
             {
-                CalculateScore(expectedPrediction);
+                CalculateScore(_expectedPrediction);
 
-                expectedFrame = null;
-                expectedPrediction = null;
-                currentPredictions.Clear();
+                _expectedFrame = null;
+                _expectedPrediction = null;
+                _currentPredictions.Clear();
             }
  
-            currentPredictions.Add(_udpServer.GetData());
+            string predictedSign = _udpServer.ReceivedData;
 
+            if (predictedSign != null)
+            {
+                _currentPredictions.Add(_udpServer.ReceivedData);
+            }
         }
     }
 
-    private string CalculateScore(string expectedPrediction)
+    private string CalculateScore(string _expectedPrediction)
     {
         int correctPredictions = 0; // Count of how many predictions were correct
 
         // Loop through each prediction made by the player
-        for (int i = 0; i < currentPredictions.Count; i++)
+        for (int i = 0; i < _currentPredictions.Count; i++)
         {
             // If the player's prediction matches the expected sign
-            if (currentPredictions[i] == expectedPrediction)
+            if (_currentPredictions[i] == _expectedPrediction)
             {
                 // Increase the count of correct predictions
                 correctPredictions++;
@@ -148,11 +156,11 @@ public class Gameplay : MonoBehaviour
         }
 
         // Calculate the percentage of predictions that were correct
-        float accuracy = (float)correctPredictions / currentPredictions.Count; 
+        float accuracy = (float)correctPredictions / _currentPredictions.Count; 
 
         // Log the calculated accuracy for debugging purposes
-        UnityEngine.Debug.Log($"Expected prediction: {expectedPrediction}");
-        UnityEngine.Debug.Log(string.Join(", ", currentPredictions));
+        UnityEngine.Debug.Log($"Expected prediction: {_expectedPrediction}");
+        UnityEngine.Debug.Log(string.Join(", ", _currentPredictions));
         UnityEngine.Debug.Log($"Accuracy: {accuracy * 100}%");
 
         // Return the score based on accuracy
@@ -173,14 +181,25 @@ public class Gameplay : MonoBehaviour
         _udpServer.SendData("STOP PREDICTIONS");
         _runningPredictions = false;
 
+        // Reset prediction values
+        _expectedFrame = null;
+        _expectedPrediction = null;
+        _currentPredictions.Clear();
+        
+        _songInformation.Clear();
+        _expectedPredictions.Clear();
+        _udpServer.ReceivedData = null;
+
         // Switch to the GameOver scene
         SceneManager.LoadScene("GameOver");
     }
 
     public void OnDestroy()
     {
+        _udpServer.SendData("STOP PREDICTIONS");
+        _runningPredictions = false;
+
         // No need to end the process we started using Process.Kill() or something similar as stopping the game and sending "TERMINATE" via UDP will work
-        StopGame();
         _udpServer.SendData("TERMINATE");
     }
 }

@@ -19,6 +19,13 @@ public class UDP_Server
     private Thread _receivingThread;
     private string _receivedData;
 
+    // Creating a property for received data to make getting and setting easier
+    public string ReceivedData
+    {
+        get => _receivedData;
+        set => _receivedData = value;
+    }
+
     private UDP_Server()
     {
         _receivingThread = new Thread(new ThreadStart(ReceiveData));
@@ -44,11 +51,6 @@ public class UDP_Server
 
             return _instance;
         }
-    }
-
-    public string GetData()
-    {
-        return _receivedData;
     }
 
     private void ReceiveData()

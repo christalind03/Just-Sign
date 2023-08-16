@@ -3,16 +3,16 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;  // Import the UI namespace
 using UnityEngine.EventSystems;
 
-
 public class SwitchScene : MonoBehaviour
 {
     public Button homeButton;  // Public reference to the UI button
 
     private string currentSceneName;
-
+    private UDP_Server _udpServer;
 
     private void Start()
     {
+        _udpServer = UDP_Server.Instance;
         currentSceneName = SceneManager.GetActiveScene().name;
 
         if (homeButton == null)
@@ -31,8 +31,11 @@ public class SwitchScene : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        string clientMessage = _udpServer.ReceivedData;
+
+        if (clientMessage == "CLIENT READY" && Input.GetKeyDown(KeyCode.Space))
         {
+            _udpServer.ReceivedData = null;
             SceneManager.LoadScene("SongSelectionMenu");
         }
 
