@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: dad92b7a768a6f040be3e750ce71ff03
+guid: 865a733ad09a9744692507b96597842f
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -11,9 +11,8 @@ TrueTypeFontImporter:
   fontNames:
   - DejaVu Serif
   fallbackFontReferences:
-  - {fileID: 12800000, guid: 143c7e671aef33348ba9e0a7cd41697a, type: 3}
-  - {fileID: 12800000, guid: d890ee11bfa85604d9956640c1393c45, type: 3}
-  - {fileID: 12800000, guid: d87e9dc6f84d2454ebc4559f56b2aeb1, type: 3}
+  - {fileID: 12800000, guid: 0478593ff451ddb41bf6874e9eb9dc49, type: 3}
+  - {fileID: 12800000, guid: 03cfe41bfcb7a0b4e85c9737a21d909c, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

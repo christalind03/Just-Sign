@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class AudioManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
+            // Listen to scene changes
+            SceneManager.sceneLoaded += OnSceneLoaded;
+
             // Start playing music immediately
             backgroundMusic.Play();
         }
@@ -21,14 +25,35 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // If the loaded scene is the main menu or the game over scene
+        if (scene.name == "MainMenu" || scene.name == "GameOver")
+        {
+            Debug.Log("Music playing");
+            backgroundMusic.Play();
+        }
+        else if (scene.name == "Gameplay")
+        {
+            Debug.Log("Music stopped");
+            backgroundMusic.Stop();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+
     public void SetVolume(float volume)
     {
         backgroundMusic.volume = volume;
     }
 
-    public void StopAndDestroyMusic()
-    {
-        backgroundMusic.Stop();
-        Destroy(gameObject); // This will destroy the AudioManager and its AudioSource
-    }
+    // public void StopAndDestroyMusic()
+    // {
+    //     backgroundMusic.Stop();
+    //     Destroy(gameObject); // This will destroy the AudioManager and its AudioSource
+    // }
 }
