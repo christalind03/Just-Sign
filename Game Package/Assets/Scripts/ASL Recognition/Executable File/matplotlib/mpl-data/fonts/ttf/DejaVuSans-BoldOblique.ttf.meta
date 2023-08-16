@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b3e0b48bdfb342e449256662208c13de
+guid: 45ce88de0599cd44ab8746b97009c968
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -10,7 +10,8 @@ TrueTypeFontImporter:
   includeFontData: 1
   fontNames:
   - DejaVu Sans
-  fallbackFontReferences: []
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: a3b3af8af4e628b409d8f12f82a0d74f, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

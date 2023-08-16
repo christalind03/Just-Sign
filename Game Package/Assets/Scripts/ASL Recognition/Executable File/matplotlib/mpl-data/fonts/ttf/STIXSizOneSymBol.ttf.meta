@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9c3adc314808e8f44a64ad3526ede480
+guid: 6ad21a44548ce8f48aaebbbd6b80e937
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -11,7 +11,7 @@ TrueTypeFontImporter:
   fontNames:
   - STIXSizeOneSym
   fallbackFontReferences:
-  - {fileID: 12800000, guid: f5eec636282b81f44a9773eafdd853c8, type: 3}
+  - {fileID: 12800000, guid: 46c776806f1bc4b45a800127d4cebb66, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b1d6de7fdde27884e903fe2cbeecae3a
+guid: e05e3f5f3eab91f478061e514d2eb6c5
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -10,8 +10,7 @@ TrueTypeFontImporter:
   includeFontData: 1
   fontNames:
   - STIXGeneral
-  fallbackFontReferences:
-  - {fileID: 12800000, guid: 305879e46e2624a47a72d099179b532f, type: 3}
+  fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1
