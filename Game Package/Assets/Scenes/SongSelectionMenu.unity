@@ -3421,7 +3421,7 @@ MonoBehaviour:
   settingsButton: {fileID: 638488938}
   returnToMenuButton: {fileID: 1861164967}
   volumeSlider: {fileID: 376597071}
-  MainSlider: {fileID: 0}
+  MainSlider: {fileID: 376597071}
 --- !u!1 &1037713814
 GameObject:
   m_ObjectHideFlags: 0
