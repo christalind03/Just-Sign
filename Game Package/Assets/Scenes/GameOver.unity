@@ -449,6 +449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rankImage: {fileID: 462665493}
   scoreText: {fileID: 1501793865}
+  highScoreText: {fileID: 1033351246}
   rankS: {fileID: 21300000, guid: a978754996c72644f9c19c772d5a968a, type: 3}
   rankA: {fileID: 21300000, guid: a978754996c72644f9c19c772d5a968a, type: 3}
   rankB: {fileID: 21300000, guid: a978754996c72644f9c19c772d5a968a, type: 3}
@@ -1104,6 +1105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   homeButton: {fileID: 0}
+  loadingTMPText: {fileID: 0}
 --- !u!114 &1489348315
 MonoBehaviour:
   m_ObjectHideFlags: 0
