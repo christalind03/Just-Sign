@@ -2,10 +2,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;  // Import the UI namespace
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class SwitchScene : MonoBehaviour
 {
-    public Button homeButton;  // Public reference to the UI button
+    public Button homeButton; 
+    public TextMeshProUGUI loadingTMPText; 
 
     private string currentSceneName;
     private UDP_Server _udpServer;
@@ -33,16 +35,16 @@ public class SwitchScene : MonoBehaviour
     {
         string clientMessage = _udpServer.ReceivedData;
 
-        if (clientMessage == "CLIENT READY" && Input.GetKeyDown(KeyCode.Space))
+        if (clientMessage == "CLIENT READY")
         {
-            _udpServer.ReceivedData = null;
-            SceneManager.LoadScene("SongSelectionMenu");
+            loadingTMPText.text = "Press Space to Start"; // Change the TextMeshPro text
+            
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _udpServer.ReceivedData = null;
+                SceneManager.LoadScene("SongSelectionMenu");
+            }
         }
-
-        // if (Input.GetMouseButtonDown(0) && currentSceneName == "GameOver")
-        // {
-        //     SceneManager.LoadScene("SongSelectionMenu");
-        // }
     }
 
     // This method will be triggered when the home button is clicked
