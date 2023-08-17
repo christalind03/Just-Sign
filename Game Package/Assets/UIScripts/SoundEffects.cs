@@ -3,16 +3,10 @@ using UnityEngine.UI;
 
 public class SoundEffects : MonoBehaviour
 {
-    private AudioSource audioSource;
+    public AudioSource buttonSFX;
 
-    private void Start()
+    public void playSoundEffect()
     {
-        audioSource = GetComponent<AudioSource>();
-        GetComponent<Button>().onClick.AddListener(PlaySound);
-    }
-
-    public void PlaySound()
-    {
-        audioSource.Play();
+        buttonSFX.Play();
     }
 }
