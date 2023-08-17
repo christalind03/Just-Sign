@@ -159,47 +159,58 @@ public class Gameplay : MonoBehaviour
     private void CalculateScore(string _expectedPrediction)
     {
         string feedback;
-        int totalPredictions = 0;
-        int correctPredictions = 0;
 
-        foreach (string predictionKey in _currentPredictions.Keys)
-        {
-            if (predictionKey == _expectedPrediction)
+        // Using a default accuracy of 50% to help the user's scoring when the model makes incorrect predictions
+        // Doing the correct signs still makes the player achieve higher scores compared to doing incorrect signs
+        int totalPredictions = 10;
+        int correctPredictions = 5;
+        
+        if (_currentPredictions.Keys.Count != 0)
+        {            
+            foreach (string predictionKey in _currentPredictions.Keys)
             {
-                correctPredictions += _currentPredictions[predictionKey];
+                if (predictionKey == _expectedPrediction)
+                {
+                    correctPredictions += _currentPredictions[predictionKey];
+                }
+
+                totalPredictions += _currentPredictions[predictionKey];
             }
 
-            totalPredictions += _currentPredictions[predictionKey];
-        }
+            float accuracy = (float)correctPredictions / totalPredictions; 
 
-        float accuracy = (float)correctPredictions / totalPredictions; 
+            UnityEngine.Debug.Log($"Expected prediction: {_expectedPrediction}");
+            UnityEngine.Debug.Log(string.Join(", ", _currentPredictions));
+            UnityEngine.Debug.Log($"Accuracy: {accuracy * 100}%");
 
-        UnityEngine.Debug.Log($"Expected prediction: {_expectedPrediction}");
-        UnityEngine.Debug.Log(string.Join(", ", _currentPredictions));
-        UnityEngine.Debug.Log($"Accuracy: {accuracy * 100}%");
-
-        if (accuracy >= 0.90)
-        {
-            _totalScore += 1000;
-            feedback = "PERFECT";
-        }
-        else if (accuracy >= 0.75)
-        {
-            _totalScore += 500;
-            feedback = "GREAT";
-        }
-        else if (accuracy >= 0.50)
-        {
-            _totalScore += 300;
-            feedback = "GOOD";
-        }
-        else if (accuracy >= 0.25)
-        {
-            _totalScore += 100;
-            feedback = "OK";
+            if (accuracy >= 0.90)
+            {
+                _totalScore += 1000;
+                feedback = "PERFECT";
+            }
+            else if (accuracy >= 0.75)
+            {
+                _totalScore += 500;
+                feedback = "GREAT";
+            }
+            else if (accuracy >= 0.50)
+            {
+                _totalScore += 300;
+                feedback = "GOOD";
+            }
+            else if (accuracy >= 0.25)
+            {
+                _totalScore += 100;
+                feedback = "OK";
+            }
+            else
+            {
+                feedback = "MISS";
+            }
         }
         else
         {
+            UnityEngine.Debug.Log($"No detections were made");
             feedback = "MISS";
         }
 
