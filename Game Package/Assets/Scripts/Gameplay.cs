@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 using UnityEngine.SceneManagement;
+using TMPro;
 
 // NOTES: 
 // Currently, data is bloated because its grabbing recieved data 30-60 times per second.
@@ -19,6 +20,9 @@ public class Gameplay : MonoBehaviour
     [SerializeField]
     private VideoPlayer _videoPlayer;
 
+    [SerializeField]
+    private TMP_Text feedbackText;
+
     private UDP_Server _udpServer;
     private bool _runningPredictions;
 
@@ -28,7 +32,7 @@ public class Gameplay : MonoBehaviour
     private int? _expectedFrame;
     private string _expectedPrediction;
 
-    // Instead of a List<string> to store _currentPredictions, lets try a HashSet<string>. A HashSet will not add duplicate entries. Each time you try to add a duplicate, it just ignores the addition.
+
     // private List<string> _currentPredictions;
     // private HashSet<string> _currentPredictions;
     private Dictionary<string, int> _currentPredictions;
@@ -214,11 +218,23 @@ public class Gameplay : MonoBehaviour
         UnityEngine.Debug.Log(string.Join(", ", _currentPredictions));
         UnityEngine.Debug.Log($"Accuracy: {accuracy * 100}%");
 
-        if (accuracy >= 0.9) { _totalScore += 100; return "PERFECT"; }
-        if (accuracy >= 0.8) { _totalScore += 80; return "GREAT"; }
-        if (accuracy >= 0.6) { _totalScore += 60; return "GOOD"; }
-        if (accuracy >= 0.4) { _totalScore += 40; return "OK"; }
-        return "MISS"; // In this setup, when a "MISS" happens, the _totalScore remains the same as it was before. The player neither gains nor loses points.
+        // if (accuracy >= 0.9) { _totalScore += 100; return "PERFECT"; }
+        // if (accuracy >= 0.8) { _totalScore += 80; return "GREAT"; }
+        // if (accuracy >= 0.6) { _totalScore += 60; return "GOOD"; }
+        // if (accuracy >= 0.4) { _totalScore += 40; return "OK"; }
+        // return "MISS"; // In this setup, when a "MISS" happens, the _totalScore remains the same as it was before. The player neither gains nor loses points.
+
+        string feedback;
+
+        if (accuracy >= 0.9) { _totalScore += 100; feedback = "PERFECT"; }
+        else if (accuracy >= 0.8) { _totalScore += 80; feedback = "GREAT"; }
+        else if (accuracy >= 0.6) { _totalScore += 60; feedback = "GOOD"; }
+        else if (accuracy >= 0.4) { _totalScore += 40; feedback = "OK"; }
+        else { feedback = "MISS"; } 
+
+        feedbackText.text = feedback; // Update the TextMeshPro text with the feedback
+        
+        return feedback;
     }
 
 
