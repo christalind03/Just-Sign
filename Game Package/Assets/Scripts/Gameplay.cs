@@ -10,6 +10,9 @@ using System.Text.RegularExpressions;
 
 using UnityEngine.SceneManagement;
 
+// NOTES: 
+// Currently, data is bloated because its grabbing recieved data 30-60 times per second.
+// The Update() method runs once per frame. If the prediction system generates predictions at a high frequency (let's say 60 times a second, roughly matching the frame rate), that might be why we see dozens of duplicate predictions within a single frame.
 
 public class Gameplay : MonoBehaviour
 {
@@ -24,7 +27,12 @@ public class Gameplay : MonoBehaviour
 
     private int? _expectedFrame;
     private string _expectedPrediction;
-    private List<string> _currentPredictions;
+
+    // Instead of a List<string> to store _currentPredictions, lets try a HashSet<string>. A HashSet will not add duplicate entries. Each time you try to add a duplicate, it just ignores the addition.
+    // private List<string> _currentPredictions;
+    // private HashSet<string> _currentPredictions;
+    private Dictionary<string, int> _currentPredictions;
+
 
     private int _totalScore = 0;
 
@@ -38,7 +46,7 @@ public class Gameplay : MonoBehaviour
 
         _expectedFrame = null;
         _expectedPrediction = null;
-        _currentPredictions = new List<string>();
+        _currentPredictions = new Dictionary<string, int>();
 
         string executableDirectory = Directory.GetCurrentDirectory() + "/Assets/Scripts/ASL Recognition/Executable.exe";
         Process.Start(executableDirectory);
@@ -130,13 +138,48 @@ public class Gameplay : MonoBehaviour
                 _expectedPrediction = null;
                 _currentPredictions.Clear();
             }
+
+            // Once the received data has been recorded for a frame in the Update() method, reset the _udpServer.ReceivedData so it doesn't keep reading the same data on subsequent frames.
  
+            // string predictedSign = _udpServer.ReceivedData;
+
+            // if (predictedSign != null)
+            // {
+            //     _currentPredictions.Add(_udpServer.ReceivedData);
+            // }
+
             string predictedSign = _udpServer.ReceivedData;
+
+            // To filter out "NO DETECTIONS" from the predictions that the player makes, modify the hashset
+            // if (predictedSign != null && predictedSign != "NO DETECTIONS")
+            // {
+            //     _currentPredictions.Add(predictedSign);
+            // }
+
+            // if (predictedSign != null)
+            // {
+            //     _currentPredictions.Add(predictedSign);
+            //     _udpServer.ReceivedData = null;
+            // }
 
             if (predictedSign != null)
             {
-                _currentPredictions.Add(_udpServer.ReceivedData);
+                if (predictedSign != "NO_DETECTIONS")
+                {
+                    if (_currentPredictions.ContainsKey(predictedSign))
+                    {
+                        _currentPredictions[predictedSign]++;
+                    }
+                    else
+                    {
+                        _currentPredictions.Add(predictedSign, 1);
+                    }
+                }
+                _udpServer.ReceivedData = null;
             }
+
+
+
         }
     }
 
@@ -145,31 +188,45 @@ public class Gameplay : MonoBehaviour
         int correctPredictions = 0; // Count of how many predictions were correct
 
         // Loop through each prediction made by the player
-        for (int i = 0; i < _currentPredictions.Count; i++)
+        // for (int i = 0; i < _currentPredictions.Count; i++)
+        // {
+        //     // If the player's prediction matches the expected sign
+        //     // if (_currentPredictions[i] == _expectedPrediction)
+        //     // {
+        //     //     // Increase the count of correct predictions
+        //     //     correctPredictions++;
+        //     // }
+        //     if (_currentPredictions.Contains(_expectedPrediction))
+        //     {
+        //         correctPredictions++;
+        //     }
+
+        // }
+
+        if (_currentPredictions.ContainsKey(_expectedPrediction))
         {
-            // If the player's prediction matches the expected sign
-            if (_currentPredictions[i] == _expectedPrediction)
-            {
-                // Increase the count of correct predictions
-                correctPredictions++;
-            }
+            correctPredictions = 1;
         }
 
-        // Calculate the percentage of predictions that were correct
         float accuracy = (float)correctPredictions / _currentPredictions.Count; 
 
-        // Log the calculated accuracy for debugging purposes
         UnityEngine.Debug.Log($"Expected prediction: {_expectedPrediction}");
         UnityEngine.Debug.Log(string.Join(", ", _currentPredictions));
         UnityEngine.Debug.Log($"Accuracy: {accuracy * 100}%");
 
-        // Return the score based on accuracy
         if (accuracy >= 0.9) { _totalScore += 100; return "PERFECT"; }
         if (accuracy >= 0.8) { _totalScore += 80; return "GREAT"; }
         if (accuracy >= 0.6) { _totalScore += 60; return "GOOD"; }
         if (accuracy >= 0.4) { _totalScore += 40; return "OK"; }
-        return "MISS";
+        return "MISS"; // In this setup, when a "MISS" happens, the _totalScore remains the same as it was before. The player neither gains nor loses points.
     }
+
+
+
+
+
+
+
 
     public int GetTotalScore()
     {
