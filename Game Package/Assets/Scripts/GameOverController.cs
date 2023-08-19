@@ -31,23 +31,23 @@ public class GameOverController : MonoBehaviour
             Debug.LogWarning("Could not retrieve total score from Gameplay. Using default value. Error: " + e.Message);
         }
 
-        if (totalScore >= 90) 
+        if (totalScore >= 9000) 
         {
             rankImage.sprite = rankS;
         }
-        else if (totalScore >= 80)
+        else if (totalScore >= 7000)
         {
             rankImage.sprite = rankA;
         }
-        else if (totalScore >= 70)
+        else if (totalScore >= 6000)
         {
             rankImage.sprite = rankB;
         }
-        else if (totalScore >= 60)
+        else if (totalScore >= 5000)
         {
             rankImage.sprite = rankC;
         }
-        else if (totalScore >= 50)
+        else if (totalScore >= 4000)
         {
             rankImage.sprite = rankD;
         }
