@@ -29,6 +29,9 @@ public class Gameplay : MonoBehaviour
     private string _expectedPrediction;
     private Dictionary<string, int> _currentPredictions;
 
+    public FeedbackManager feedbackManagerInstance;
+
+
 
     private int _totalScore = 0;
 
@@ -214,7 +217,8 @@ public class Gameplay : MonoBehaviour
             feedback = "MISS";
         }
 
-        feedbackText.text = feedback; // Update the TextMeshPro text with the feedback
+        // feedbackText.text = feedback;
+        feedbackManagerInstance.ShowFeedback(feedback); // Update the TextMeshPro text with the feedback
     }
 
     public int GetTotalScore()
