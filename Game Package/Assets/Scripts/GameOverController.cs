@@ -14,6 +14,8 @@ public class GameOverController : MonoBehaviour
     public Sprite rankA; // Assign the sprite for rank A in the inspector
     public Sprite rankB; // Assign the sprite for rank B in the inspector
     public Sprite rankC; // Assign the sprite for rank C in the inspector
+    public Sprite rankD;
+    public Sprite rankF;
     // ... add more as needed
 
     int totalScore = 90; // default value
@@ -37,13 +39,21 @@ public class GameOverController : MonoBehaviour
         {
             rankImage.sprite = rankA;
         }
-        else if (totalScore >= 60)
+        else if (totalScore >= 70)
         {
             rankImage.sprite = rankB;
         }
-        else
+        else if (totalScore >= 60)
         {
             rankImage.sprite = rankC;
+        }
+        else if (totalScore >= 50)
+        {
+            rankImage.sprite = rankD;
+        }
+        else
+        {
+            rankImage.sprite = rankF;
         }
 
         scoreText.text = "Score: " + totalScore.ToString();
