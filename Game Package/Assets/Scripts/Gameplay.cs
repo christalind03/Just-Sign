@@ -193,18 +193,10 @@ public class Gameplay : MonoBehaviour
                 _totalScore += 500;
                 feedback = "GREAT";
             }
-            else if (accuracy >= 0.70)
-            {
-                feedback = "NICE";
-            }
             else if (accuracy >= 0.50)
             {
                 _totalScore += 300;
                 feedback = "GOOD";
-            }
-            else if (accuracy >= 0.33)
-            {
-                feedback = "ALRIGHT";
             }
             else if (accuracy >= 0.25)
             {

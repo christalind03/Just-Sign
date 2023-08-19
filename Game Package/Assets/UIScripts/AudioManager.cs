@@ -5,6 +5,7 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
     public AudioSource backgroundMusic;
+    public AudioClip[] sfxClips;  // All the sound effects clips you need
 
     private void Awake()
     {
@@ -31,7 +32,10 @@ public class AudioManager : MonoBehaviour
         if (scene.name == "MainMenu" || scene.name == "GameOver")
         {
             Debug.Log("Music playing");
-            backgroundMusic.Play();
+            if (!backgroundMusic.isPlaying) // Added a check to prevent replaying
+            {
+                backgroundMusic.Play();
+            }
         }
         else if (scene.name == "Gameplay")
         {
@@ -45,15 +49,16 @@ public class AudioManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-
     public void SetVolume(float volume)
     {
         backgroundMusic.volume = volume;
     }
 
-    // public void StopAndDestroyMusic()
-    // {
-    //     backgroundMusic.Stop();
-    //     Destroy(gameObject); // This will destroy the AudioManager and its AudioSource
-    // }
+    public void PlaySFX(int clipIndex) 
+    {
+        if (clipIndex >= 0 && clipIndex < sfxClips.Length)
+        {
+            backgroundMusic.PlayOneShot(sfxClips[clipIndex]);
+        }
+    }
 }

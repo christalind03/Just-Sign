@@ -780,6 +780,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundMusic: {fileID: 1252775205}
+  sfxClips:
+  - {fileID: 8300000, guid: 43a19b4c78683ef49992a057f9831a9b, type: 3}
+  - {fileID: 8300000, guid: 7144b02bf451e594da1bfd5ba0daa8bd, type: 3}
 --- !u!82 &1252775205
 AudioSource:
   m_ObjectHideFlags: 0
