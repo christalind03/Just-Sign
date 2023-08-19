@@ -31,8 +31,7 @@ public class Gameplay : MonoBehaviour
 
     public FeedbackManager feedbackManagerInstance;
 
-
-
+    private int _maxScore = 0;
     private int _totalScore = 0;
 
     public void Start()
@@ -103,6 +102,13 @@ public class Gameplay : MonoBehaviour
                 }
             }
         }
+
+        // Update maximum score based on the number of expected predictions times 1000
+        // This score is equivalent to getting "PERFECT" on all predictions
+        _maxScore = _expectedPredictions.Count * 1000;
+
+        // Reset the current, total score
+        _totalScore = 0;
     }
 
     public void StartGame()
@@ -182,26 +188,22 @@ public class Gameplay : MonoBehaviour
 
             float accuracy = (float)correctPredictions / totalPredictions; 
 
-            UnityEngine.Debug.Log($"Expected prediction: {_expectedPrediction}");
-            UnityEngine.Debug.Log(string.Join(", ", _currentPredictions));
-            UnityEngine.Debug.Log($"Accuracy: {accuracy * 100}%");
-
-            if (accuracy >= 0.90)
+            if (accuracy >= 0.55)
             {
                 _totalScore += 1000;
                 feedback = "PERFECT";
             }
-            else if (accuracy >= 0.75)
+            else if (accuracy >= 0.35)
             {
                 _totalScore += 500;
                 feedback = "GREAT";
             }
-            else if (accuracy >= 0.50)
+            else if (accuracy >= 0.25)
             {
                 _totalScore += 300;
                 feedback = "GOOD";
             }
-            else if (accuracy >= 0.25)
+            else if (accuracy >= 0.15)
             {
                 _totalScore += 100;
                 feedback = "OK";
@@ -217,8 +219,12 @@ public class Gameplay : MonoBehaviour
             feedback = "MISS";
         }
 
-        // feedbackText.text = feedback;
         feedbackManagerInstance.ShowFeedback(feedback); // Update the TextMeshPro text with the feedback
+    }
+
+    public int GetMaxScore()
+    {
+        return _maxScore;
     }
 
     public int GetTotalScore()
@@ -239,6 +245,8 @@ public class Gameplay : MonoBehaviour
         _songInformation.Clear();
         _expectedPredictions.Clear();
         _udpServer.ReceivedData = null;
+        
+        feedbackManagerInstance.ShowFeedback("");
 
         // Switch to the GameOver scene
         SceneManager.LoadScene("GameOver");

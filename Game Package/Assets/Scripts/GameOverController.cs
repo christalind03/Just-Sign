@@ -18,36 +18,33 @@ public class GameOverController : MonoBehaviour
     public Sprite rankF;
     // ... add more as needed
 
-    int totalScore = 90; // default value
+    private Gameplay _gameplay;
+    int totalScore = 0; // Default value
 
     private void Start()
     {
-        try
-        {
-            totalScore = FindObjectOfType<Gameplay>().GetTotalScore();
-        }
-        catch (Exception e)
-        {
-            Debug.LogWarning("Could not retrieve total score from Gameplay. Using default value. Error: " + e.Message);
-        }
+        _gameplay = FindObjectOfType<Gameplay>();
 
-        if (totalScore >= 9000) 
+        totalScore = _gameplay.GetTotalScore();
+        float totalAccuracy = (float)totalScore / _gameplay.GetMaxScore();
+
+        if (totalAccuracy >= 0.55) 
         {
             rankImage.sprite = rankS;
         }
-        else if (totalScore >= 7000)
+        else if (totalAccuracy >= 0.45)
         {
             rankImage.sprite = rankA;
         }
-        else if (totalScore >= 6000)
+        else if (totalAccuracy >= 0.35)
         {
             rankImage.sprite = rankB;
         }
-        else if (totalScore >= 5000)
+        else if (totalAccuracy >= 0.25)
         {
             rankImage.sprite = rankC;
         }
-        else if (totalScore >= 4000)
+        else if (totalAccuracy >= 0.15)
         {
             rankImage.sprite = rankD;
         }
