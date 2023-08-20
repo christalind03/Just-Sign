@@ -133,4 +133,5 @@ with mp.solutions.holistic.Holistic(min_detection_confidence=0.5, min_tracking_c
         if server_response == "TERMINATE":
             break
 
+    receive_thread.join()
     unity_websocket.close()

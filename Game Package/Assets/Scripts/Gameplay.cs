@@ -17,7 +17,6 @@ public class Gameplay : MonoBehaviour
     private VideoPlayer _videoPlayer;
 
     private UDP_Server _udpServer;
-    private Process _pythonClient;
     private bool _runningPredictions;
 
     private Dictionary<string, string> _songInformation;
@@ -55,7 +54,7 @@ public class Gameplay : MonoBehaviour
         _expectedPrediction = null;
         _currentPredictions = new Dictionary<string, int>();
 
-        _pythonClient = Process.Start(Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Scripts\ASL Recognition\Executable.exe"));
+        Process.Start(Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Scripts\ASL Recognition\ASL Recognition Executable.exe"));
         DontDestroyOnLoad(this.gameObject);
     }
 
@@ -255,9 +254,12 @@ public class Gameplay : MonoBehaviour
         SceneManager.LoadScene("GameOver");
     }
 
-    void OnDestroy()
+    public void OnApplicationQuit()
     {
         // Close the connection between servers
-        _pythonClient.Kill();
+        foreach (Process ongoingProcess in Process.GetProcessesByName("ASL Recognition Executable"))
+        {
+            ongoingProcess.Kill();
+        }
     }
 }
