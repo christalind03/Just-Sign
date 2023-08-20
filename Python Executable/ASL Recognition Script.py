@@ -101,8 +101,6 @@ with mp.solutions.holistic.Holistic(min_detection_confidence=0.5, min_tracking_c
     while True:
         # Run specific actions based on the response from the server
         if server_response == "START PREDICTIONS":
-            print("Running predictions...")
-
             sequence = []
             sequence_length = 25
 
@@ -127,14 +125,12 @@ with mp.solutions.holistic.Holistic(min_detection_confidence=0.5, min_tracking_c
 
                 # Stop running predictions
                 if server_response == "STOP PREDICTIONS":
-                    print("Stopping predictions...")
                     break
 
             video_capture.release()
             cv2.destroyAllWindows()
 
         if server_response == "TERMINATE":
-            print("Exiting program...")
             break
 
     unity_websocket.close()

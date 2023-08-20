@@ -18,15 +18,11 @@ public class GameOverController : MonoBehaviour
     public Sprite rankF;
     // ... add more as needed
 
-    private Gameplay _gameplay;
-    int totalScore = 0; // Default value
-
     private void Start()
     {
-        _gameplay = FindObjectOfType<Gameplay>();
+        Gameplay gameplay = FindObjectOfType<Gameplay>();
 
-        totalScore = _gameplay.GetTotalScore();
-        float totalAccuracy = (float)totalScore / _gameplay.GetMaxScore();
+        float totalAccuracy = (float)gameplay.TotalScore / gameplay.MaxScore;
 
         if (totalAccuracy >= 0.55) 
         {
@@ -53,13 +49,13 @@ public class GameOverController : MonoBehaviour
             rankImage.sprite = rankF;
         }
 
-        scoreText.text = "Score: " + totalScore.ToString();
+        scoreText.text = "Score: " + gameplay.TotalScore.ToString();
 
         // Check and update high score
         int currentHighScore = PlayerPrefs.GetInt("HighScore", 0); // If "HighScore" doesn't exist, it defaults to 0
-        if (totalScore > currentHighScore)
+        if (gameplay.TotalScore > currentHighScore)
         {
-            PlayerPrefs.SetInt("HighScore", totalScore); // Save the new high score
+            PlayerPrefs.SetInt("HighScore", gameplay.TotalScore); // Save the new high score
             PlayerPrefs.Save(); // Important to ensure that the data is saved to disk
         }
 

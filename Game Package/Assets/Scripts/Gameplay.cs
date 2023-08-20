@@ -16,10 +16,8 @@ public class Gameplay : MonoBehaviour
     [SerializeField]
     private VideoPlayer _videoPlayer;
 
-    [SerializeField]
-    private TMP_Text feedbackText;
-
     private UDP_Server _udpServer;
+    private Process _pythonClient;
     private bool _runningPredictions;
 
     private Dictionary<string, string> _songInformation;
@@ -30,9 +28,20 @@ public class Gameplay : MonoBehaviour
     private Dictionary<string, int> _currentPredictions;
 
     public FeedbackManager feedbackManagerInstance;
+    public FeedbackManager feedbackGhostManagerInstance;
 
     private int _maxScore = 0;
     private int _totalScore = 0;
+
+    public int MaxScore
+    {
+        get => _maxScore;
+    }
+
+    public int TotalScore
+    {
+        get => _totalScore;
+    }
 
     public void Start()
     {
@@ -46,8 +55,8 @@ public class Gameplay : MonoBehaviour
         _expectedPrediction = null;
         _currentPredictions = new Dictionary<string, int>();
 
-        string executableDirectory = Directory.GetCurrentDirectory() + "/Assets/Scripts/ASL Recognition/Executable.exe";
-        Process.Start(executableDirectory);
+        _pythonClient = Process.Start(Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Scripts\ASL Recognition\Executable.exe"));
+        DontDestroyOnLoad(this.gameObject);
     }
 
     public void LoadSong(string songFolderPath)
@@ -132,7 +141,10 @@ public class Gameplay : MonoBehaviour
                 }
                 catch
                 {
-                    StopGame();
+                    if ((ulong)_videoPlayer.frame == _videoPlayer.frameCount - 1)
+                    {
+                        StopGame();
+                    }
                 }
             }
             else if ((_expectedFrame != null) && (_videoPlayer.frame == _expectedFrame))
@@ -215,24 +227,14 @@ public class Gameplay : MonoBehaviour
         }
         else
         {
-            UnityEngine.Debug.Log($"No detections were made");
             feedback = "MISS";
         }
 
         feedbackManagerInstance.ShowFeedback(feedback); // Update the TextMeshPro text with the feedback
+        feedbackGhostManagerInstance.ShowFeedback(feedback); // Update the TextMeshPro text with the feedback
     }
 
-    public int GetMaxScore()
-    {
-        return _maxScore;
-    }
-
-    public int GetTotalScore()
-    {
-        return _totalScore;
-    }
-
-    public void StopGame()
+    private void StopGame()
     {
         _udpServer.SendData("STOP PREDICTIONS");
         _runningPredictions = false;
@@ -247,17 +249,15 @@ public class Gameplay : MonoBehaviour
         _udpServer.ReceivedData = null;
         
         feedbackManagerInstance.ShowFeedback("");
+        feedbackGhostManagerInstance.ShowFeedback("");
 
         // Switch to the GameOver scene
         SceneManager.LoadScene("GameOver");
     }
 
-    public void OnDestroy()
+    void OnDestroy()
     {
-        _udpServer.SendData("STOP PREDICTIONS");
-        _runningPredictions = false;
-
-        // No need to end the process we started using Process.Kill() or something similar as stopping the game and sending "TERMINATE" via UDP will work
-        _udpServer.SendData("TERMINATE");
+        // Close the connection between servers
+        _pythonClient.Kill();
     }
 }

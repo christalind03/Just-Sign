@@ -1,1 +1,1 @@
-Game[[:space:]]Package/Assets/Scripts/ASL[[:space:]]Recognition/tensorflow/python/_pywrap_tensorflow_internal.pyd filter=lfs diff=lfs merge=lfs -text
+Game[[:space:]]Package/Assets/Scripts/ASL[[:space:]]Recognition/Executable.exe filter=lfs diff=lfs merge=lfs -text
