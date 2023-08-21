@@ -6,7 +6,7 @@ using TMPro;
 
 public class SwitchScene : MonoBehaviour
 {
-    public Button homeButton; 
+    // public Button homeButton; 
     public TextMeshProUGUI loadingTMPText; 
 
     private string currentSceneName;
@@ -17,17 +17,17 @@ public class SwitchScene : MonoBehaviour
         _udpServer = UDP_Server.Instance;
         currentSceneName = SceneManager.GetActiveScene().name;
 
-        if (homeButton == null)
-        {
-            // Try to find the button in the children of this object if not set
-            homeButton = GetComponentInChildren<Button>();
-        }
+        // if (homeButton == null)
+        // {
+        //     // Try to find the button in the children of this object if not set
+        //     homeButton = GetComponentInChildren<Button>();
+        // }
 
-        // If the button is found, add a click listener to it
-        if (homeButton != null)
-        {
-            homeButton.onClick.AddListener(GoToMainMenu);
-        }
+        // // If the button is found, add a click listener to it
+        // if (homeButton != null)
+        // {
+        //     homeButton.onClick.AddListener(GoToMainMenu);
+        // }
     }
 
 

@@ -4058,7 +4058,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f235264d7c92c524c9b78f85736bc3ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  homeButton: {fileID: 450244093}
   loadingTMPText: {fileID: 0}
 --- !u!1 &1250791119
 GameObject:
