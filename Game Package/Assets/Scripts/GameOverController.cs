@@ -1,67 +1,91 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System;
-
 
 public class GameOverController : MonoBehaviour
 {
-    public Image rankImage; // Drag and drop the Image component where you want to display rank
-    public TextMeshProUGUI scoreText; // Drag and drop the Text component where you want to display the score
-    public TextMeshProUGUI highScoreText; // Drag and drop the Text component where you want to display the high score
+    public Image rankImage;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI highScoreText;
 
-    public Sprite rankS; // Assign the sprite for rank S in the inspector
-    public Sprite rankA; // Assign the sprite for rank A in the inspector
-    public Sprite rankB; // Assign the sprite for rank B in the inspector
-    public Sprite rankC; // Assign the sprite for rank C in the inspector
+    public Sprite rankS;
+    public Sprite rankA;
+    public Sprite rankB;
+    public Sprite rankC;
     public Sprite rankD;
     public Sprite rankF;
-    // ... add more as needed
 
     private void Start()
     {
         Gameplay gameplay = FindObjectOfType<Gameplay>();
-
         float totalAccuracy = (float)gameplay.TotalScore / gameplay.MaxScore;
 
-        if (totalAccuracy >= 0.55) 
-        {
-            rankImage.sprite = rankS;
-        }
-        else if (totalAccuracy >= 0.45)
-        {
-            rankImage.sprite = rankA;
-        }
-        else if (totalAccuracy >= 0.35)
-        {
-            rankImage.sprite = rankB;
-        }
-        else if (totalAccuracy >= 0.25)
-        {
-            rankImage.sprite = rankC;
-        }
-        else if (totalAccuracy >= 0.15)
-        {
-            rankImage.sprite = rankD;
-        }
-        else
-        {
-            rankImage.sprite = rankF;
-        }
-
+        string currentRank = DetermineRank(totalAccuracy);
+        SetRankSprite(currentRank);  // Set current playthrough rank
+        
         scoreText.text = "Score: " + gameplay.TotalScore.ToString();
 
         // Check and update high score
-        int currentHighScore = PlayerPrefs.GetInt("HighScore", 0); // If "HighScore" doesn't exist, it defaults to 0
+        int currentHighScore = PlayerPrefs.GetInt("HighScore", 0);
         if (gameplay.TotalScore > currentHighScore)
         {
-            PlayerPrefs.SetInt("HighScore", gameplay.TotalScore); // Save the new high score
-            PlayerPrefs.Save(); // Important to ensure that the data is saved to disk
+            PlayerPrefs.SetInt("HighScore", gameplay.TotalScore);
         }
 
-        // Display the high score
-        int savedHighScore = PlayerPrefs.GetInt("HighScore", 0); // If "HighScore" doesn't exist, it defaults to 0
-        highScoreText.text = "High Score: " + savedHighScore.ToString();
+        // Check and update rank if it's better
+        string highestRank = PlayerPrefs.GetString("HighestRank", "F");
+        if (RankIsHigher(currentRank, highestRank))
+        {
+            PlayerPrefs.SetString("HighestRank", currentRank);
+        }
 
+        PlayerPrefs.Save();
+
+        int savedHighScore = PlayerPrefs.GetInt("HighScore", 0);
+        highScoreText.text = "High Score: " + savedHighScore.ToString();
+    }
+
+    private string DetermineRank(float accuracy)
+    {
+        if (accuracy >= 0.55) return "S";
+        if (accuracy >= 0.45) return "A";
+        if (accuracy >= 0.35) return "B";
+        if (accuracy >= 0.25) return "C";
+        if (accuracy >= 0.15) return "D";
+        return "F";
+    }
+
+    private bool RankIsHigher(string currentRank, string highestRank)
+    {
+        string[] rankOrder = { "F", "D", "C", "B", "A", "S" };
+        int currentIndex = System.Array.IndexOf(rankOrder, currentRank);
+        int highestIndex = System.Array.IndexOf(rankOrder, highestRank);
+
+        return currentIndex > highestIndex;
+    }
+
+    private void SetRankSprite(string rank)
+    {
+        switch(rank)
+        {
+            case "S":
+                rankImage.sprite = rankS;
+                break;
+            case "A":
+                rankImage.sprite = rankA;
+                break;
+            case "B":
+                rankImage.sprite = rankB;
+                break;
+            case "C":
+                rankImage.sprite = rankC;
+                break;
+            case "D":
+                rankImage.sprite = rankD;
+                break;
+            default:
+                rankImage.sprite = rankF;
+                break;
+        }
     }
 }
