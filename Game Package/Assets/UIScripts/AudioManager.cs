@@ -5,6 +5,7 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
     public AudioSource backgroundMusic;
+    public AudioSource sfxAudioSource;  // New AudioSource specifically for SFX
     public AudioClip[] sfxClips;  // All the sound effects clips you need
 
     private void Awake()
@@ -51,14 +52,21 @@ public class AudioManager : MonoBehaviour
 
     public void SetVolume(float volume)
     {
-        backgroundMusic.volume = volume;
+        backgroundMusic.volume = volume;  // Adjust this if you want separate volumes for BGM and SFX
+        sfxAudioSource.volume = volume;  // Adjust this if you want separate volumes for BGM and SFX
     }
 
     public void PlaySFX(int clipIndex) 
     {
         if (clipIndex >= 0 && clipIndex < sfxClips.Length)
         {
-            backgroundMusic.PlayOneShot(sfxClips[clipIndex]);
+            sfxAudioSource.PlayOneShot(sfxClips[clipIndex]);
+            Debug.Log($"Playing SFX Clip {sfxClips[clipIndex]}");
+        }
+        else 
+        {
+            Debug.LogError($"Invalid clip index: {clipIndex}. Ensure the clip exists in the sfxClips array.");
         }
     }
+
 }
