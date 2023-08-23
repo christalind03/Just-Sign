@@ -84,11 +84,11 @@ def extract_keypoints(results):
     return np.concatenate([face, pose, left_hand, right_hand])
 
 # Setup the ASL Recognition and MediaPipe models
-asl_model = tf.keras.models.load_model("Assets/Scripts/ASL Recognition/ASL Recognition Model.h5")
+asl_model = tf.keras.models.load_model(os.path.join(os.path.dirname(sys.path[0]), "ASL Recognition Model.h5"))
 with mp.solutions.holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
     # Create a UDP client to connect with the UDP server
     unity_websocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    server_address = ("127.0.0.1", 50505)
+    server_address = ("127.0.0.1", 5000)
 
     # Send a message to the server saying that the client is ready
     unity_websocket.sendto(str.encode("CLIENT READY"), server_address)
