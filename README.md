@@ -17,6 +17,7 @@ Menu Music: "Tokyo Bounce" by MACROSS 82-99
 # Detailed Overview
 
 **"Just Sign"** is an interactive game that educates and challenges players on American Sign Language (ASL) recognition. By leveraging advanced machine learning techniques, the game offers a seamless experience in detecting and understanding a multitude of ASL gestures.
+https://github.com/christalind03/Just-Sign/assets/97999032/5403378c-a67f-4cef-a25e-b7e6bae824e0
 
 ## Machine Learning Model Architecture
 
